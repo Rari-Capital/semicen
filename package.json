@@ -1,0 +1,21 @@
+{
+  "name": "semicen",
+  "version": "1.0.0",
+  "description": "Consensus and reward contracts for Rari's 'semicen' rebalancer system.",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "coverage": "hardhat coverage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@nomiclabs/hardhat-etherscan": "^2.1.0",
+    "hardhat": "^2.0.7",
+    "solidity-coverage": "^0.7.13"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^3.3.0"
+  }
+}
