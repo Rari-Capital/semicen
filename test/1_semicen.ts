@@ -1,18 +1,33 @@
 import { artifacts, contract } from "hardhat";
-import { SemicenContract, SemicenInstance } from "../typechain/Semicen";
+import {
+  MockFundControllerContract,
+  MockFundManagerContract,
+  SemicenContract,
+  SemicenInstance,
+} from "../typechain";
+
 const Semicen: SemicenContract = artifacts.require("Semicen");
 
+const MockFundController: MockFundControllerContract = artifacts.require(
+  "MockFundController"
+);
+const MockFundManager: MockFundManagerContract = artifacts.require(
+  "MockFundManager"
+);
 contract("Semicen", (accounts) => {
   let [deployer, rebalancer1, rebalancer2, rebalancer3] = accounts;
 
   let semicen: SemicenInstance;
 
   before(async () => {
+    const mockFundController = await MockFundController.new();
+    const mockFundManager = await MockFundManager.new();
+
     semicen = await Semicen.new(
       30,
       20,
-      "0xEe7162bB5191E8EC803F7635dE9A920159F1F40C",
-      "0xC6BF8C8A55f77686720E0a88e2Fd1fEEF58ddf4a"
+      mockFundController.address,
+      mockFundManager.address
     );
   });
 
