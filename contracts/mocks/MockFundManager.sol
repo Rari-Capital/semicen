@@ -2,6 +2,7 @@
 pragma solidity 0.7.3;
 
 import "../interfaces/FundManager.sol";
+import "hardhat/console.sol";
 
 contract MockFundManager is FundManager {
     function getInterestFeesUnclaimed() external override returns (uint256) {
@@ -11,5 +12,7 @@ contract MockFundManager is FundManager {
     function withdrawInterestFees(uint256 amount, address to)
         external
         override
-    {}
+    {
+        console.log("Withdrawing ", amount, " USD to: ", to);
+    }
 }
