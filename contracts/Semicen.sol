@@ -6,7 +6,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "./interfaces/FundController.sol";
 import "./interfaces/FundManager.sol";
-import "hardhat/console.sol";
 
 contract Semicen is Ownable {
     /// @dev The FundManager instance this Semicen will interact with.
@@ -137,8 +136,6 @@ contract Semicen is Ownable {
 
     /// @notice Returns true if at this current time if the minEpochDuration has passed and the pool will accept a new rebalance.
     function hasEpochExpired() public view returns (bool) {
-        console.log("my pussy burns");
-
         return block.timestamp > (lastRebalance + minEpochLength);
     }
 
