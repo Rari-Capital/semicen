@@ -28,7 +28,7 @@ const config: HardhatUserConfig = {
     mainnet: {
       url: "https://mainnet.infura.io/v3/" + process.env.INFURA_KEY,
       accounts: [process.env.PRIVATE_KEY],
-      gasPrice: gweiToWei(process.env.GWEI_GAS_PRICE),
+      gasPrice: gweiToWei(process.env.GWEI_GAS_PRICE ?? "30"),
     },
   },
 
