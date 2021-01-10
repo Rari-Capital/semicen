@@ -15,7 +15,7 @@ jobs:
       - name: Run unit tests with coverage
         run: npm run coverage
 
-      - name: Upload coverage report to Coveralls
-        uses: coverallsapp/github-action@master
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }} # This is passed by Github, don't worry about setting this.
+      # - name: Upload coverage report to Coveralls
+      #   uses: coverallsapp/github-action@master
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }} # This is passed by Github, don't worry about setting this.
