@@ -383,3 +383,4 @@ coverage.json
 .coverage_contracts
 node_modules
 .vscode/
+typechain

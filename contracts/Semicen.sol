@@ -6,12 +6,13 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 import "./interfaces/FundController.sol";
 import "./interfaces/FundManager.sol";
+import "hardhat/console.sol";
 
-contract FuelCell is Ownable {
-    /// @dev The FundManager instance this FuelCell will interact with.
+contract Semicen is Ownable {
+    /// @dev The FundManager instance this Semicen will interact with.
     FundManager internal fundManager;
 
-    /// @dev The fundController instance this FuelCell will interact with.
+    /// @dev The fundController instance this Semicen will interact with.
     FundController internal fundController;
 
     /// @notice Timestamp in seconds when the last rebalance occured.
@@ -70,7 +71,7 @@ contract FuelCell is Ownable {
     /// @dev This number would be the same as adding up all the mapped reward amounts in the rebalancerUnclaimedRewards map.
     uint256 internal unclaimedRewardAmount = 0;
 
-    /// @notice Creates a FuelCell with a min epoch length.
+    /// @notice Creates a Semicen with a min epoch length.
     /// @notice Adds the sender as a rebalancer.
     /// @param _minEpochLength Amount of seconds that must pass before the next rebalance will be allowed to occur.
     /// @param _minEpochLength The minimum time in seconds before a user can claim their rewards after they stop rebalancing.
@@ -136,6 +137,8 @@ contract FuelCell is Ownable {
 
     /// @notice Returns true if at this current time if the minEpochDuration has passed and the pool will accept a new rebalance.
     function hasEpochExpired() public view returns (bool) {
+        console.log("my pussy burns");
+
         return block.timestamp > (lastRebalance + minEpochLength);
     }
 
