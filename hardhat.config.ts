@@ -3,13 +3,14 @@ dotenv.config();
 
 import { HardhatUserConfig } from "hardhat/config";
 
-const { gweiToWei } = require("./utils");
+import { gweiToWei } from "./utils";
 
 // Plugins:
 import "solidity-coverage";
 import "@nomiclabs/hardhat-etherscan";
 import "@nomiclabs/hardhat-truffle5";
 import "hardhat-typechain";
+import "hardhat-gas-reporter";
 import { removeConsoleLog } from "hardhat-preprocessor";
 
 const config: HardhatUserConfig = {
@@ -54,6 +55,12 @@ const config: HardhatUserConfig = {
 
   typechain: {
     target: "truffle-v5",
+  },
+
+  gasReporter: {
+    currency: "USD",
+    gasPrice: parseInt(process.env.GWEI_GAS_PRICE ?? "20"),
+    coinmarketcap: process.env.COINMARKETCAP_API_KEY,
   },
 };
 
