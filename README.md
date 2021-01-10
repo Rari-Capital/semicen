@@ -8,7 +8,7 @@ The `Semicen.sol` contract allows multiple trusted parties (determined by the co
 
 ## How does it work?
 
-The owner of the contract (Rari team) can add any address as a "trusted rebalancer". These trusted rebalancers can have their rebalancing permissions stripped at any time by the owner but can still claim their rewards (unless seized by the owner as well).
+The owner of the contract (Rari team) can add any address as a "trusted rebalancer". These trusted rebalancers can have their rebalancing permissions stripped at any time by the owner.
 
 Trusted rebalancers are allowed to call the `rebalance()` function on the Semicen contract with an array of steps to take to perform their rebalance. Rebalancers may only call this function if the amount of time passed between the last rebalance and the current timestamp is greater or equal to a minimum duration set by the owner. This enforces a minimum amount of time between each rebalance (known as the 'min epoch length'), which may be necessary to prevent constant "one-upping" by the trusted rebalancers attempting to take as many fees as they can (and in the process deviating from the ideal allocation of funds). 
 
