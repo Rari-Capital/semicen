@@ -1,18 +1,13 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity 0.7.3;
 
-import "../interfaces/FundManager.sol";
+import "../interfaces/FundDelegator.sol";
 import "hardhat/console.sol";
 
 contract MockFundManager is FundManager {
     uint256 lastWithdraw = block.timestamp;
 
-    function getInterestFeesUnclaimed()
-        external
-        view
-        override
-        returns (uint256)
-    {
+    function getInterestFeesUnclaimed() external override returns (uint256) {
         return block.timestamp - lastWithdraw;
     }
 

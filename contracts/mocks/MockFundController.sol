@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 pragma solidity 0.7.3;
 
-import "../interfaces/FundController.sol";
+import "../interfaces/FundDelegator.sol";
 import "hardhat/console.sol";
 
 contract MockFundController is FundController {

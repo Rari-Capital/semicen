@@ -3,16 +3,11 @@ pragma solidity 0.7.3;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-
-import "./interfaces/FundController.sol";
-import "./interfaces/FundManager.sol";
+import "./interfaces/FundDelegator.sol";
 
 contract Semicen is Ownable {
-    /// @dev The FundManager instance this Semicen will interact with.
-    FundManager internal fundManager;
-
-    /// @dev The fundController instance this Semicen will interact with.
-    FundController internal fundController;
+    /// @dev The FundDelegator instance this Semicen will interact with.
+    FundDelegator internal fundDelegator;
 
     /// @notice Timestamp in seconds when the last rebalance occured.
     uint256 public lastRebalance;
@@ -34,12 +29,6 @@ contract Semicen is Ownable {
 
     /// @notice Maps each rebalancer (current or past) to the timestamp of their last rebalance.
     mapping(address => uint256) public rebalancerLastRebalance;
-
-    /// @notice Emitted when the fundManager variable is updated via setFundManager()
-    event FundManagerUpdated(address indexed newFundManager);
-
-    /// @notice Emitted when the fundController variable is updated via setFundController()
-    event FundControllerUpdated(address indexed newFundController);
 
     /// @notice Emitted when the min epoch length is updated via setMinEpochLength()
     event MinEpochLengthUpdated(uint256 newMinEpochLength);
@@ -73,47 +62,29 @@ contract Semicen is Ownable {
     /// @notice Creates a Semicen with a min epoch length.
     /// @notice Adds the sender as a rebalancer.
     /// @param _minEpochLength Amount of seconds that must pass before the next rebalance will be allowed to occur.
-    /// @param _minEpochLength The minimum time in seconds before a user can claim their rewards after they stop rebalancing.
+    /// @param _rewardClaimTimelock The minimum time in seconds before a user can claim their rewards after they stop rebalancing.
+    /// @param _fundDelegator The FundDelegator instance this Semicen will interact with.
     constructor(
         uint256 _minEpochLength,
         uint256 _rewardClaimTimelock,
-        FundController _fundController,
-        FundManager _fundManager
+        FundDelegator _fundDelegator
     ) {
         minEpochLength = _minEpochLength;
         rewardClaimTimelock = _rewardClaimTimelock;
 
-        fundController = _fundController;
-        fundManager = _fundManager;
+        fundDelegator = _fundDelegator;
 
         addRebalancer(msg.sender);
     }
 
-    /// @notice Updates the fundController variable. Only the only can update.
-    /// @param newFundController The new fundController.
-    function setFundController(FundController newFundController)
-        external
-        onlyOwner
-    {
-        fundController = newFundController;
-        emit FundControllerUpdated(address(newFundController));
-    }
-
-    /// @notice Updates the fundManager variable. Only the only can update.
-    /// @param newFundManager The new fundManager.
-    function setFundManager(FundManager newFundManager) external onlyOwner {
-        fundManager = newFundManager;
-        emit FundManagerUpdated(address(newFundManager));
-    }
-
-    /// @notice Updates the minEpochLength variable. Only the only can update.
+    /// @notice Updates the minEpochLength variable. Only the owner can update.
     /// @param newMinEpochLength The new min epoch length in seconds.
     function setMinEpochLength(uint256 newMinEpochLength) external onlyOwner {
         minEpochLength = newMinEpochLength;
         emit MinEpochLengthUpdated(newMinEpochLength);
     }
 
-    /// @notice Updates the reward claim timelock. Only the only can update.
+    /// @notice Updates the reward claim timelock. Only the owner can update.
     /// @param newTimelock The minimum time in seconds before a user can claim their rewards after they stop rebalancing.
     function setRewardClaimTimelock(uint256 newTimelock) external onlyOwner {
         rewardClaimTimelock = newTimelock;
@@ -139,19 +110,9 @@ contract Semicen is Ownable {
         return block.timestamp >= (lastRebalance + minEpochLength);
     }
 
-    /// @dev A struct that contains the details neccessary to call any of the possible action code's corresponding functions on the FundController.
-    struct Steps {
-        // 0: Deposit
-        // 1: Withdraw
-        uint256 actionCode;
-        uint256 liquidityPool;
-        string currencyCode;
-        uint256 amount;
-    }
-
     /// @notice Performs a rebalance by shifting the pool's allocations.
     /// @notice The rebalancer will get the fees earned from their rebalance when the next one takes place.
-    function rebalance(Steps[] calldata steps) public {
+    function rebalance(FundDelegator.Steps[] calldata steps) public {
         require(
             trustedRebalancers[msg.sender],
             "You must be a trusted rebalancer!"
@@ -165,7 +126,8 @@ contract Semicen is Ownable {
         // If this is not the first rebalance, increment the last rebalancer's unclaimed rewards by the amount of fees earned.
         if (lastRebalance > 0) {
             uint256 feesEarned =
-                fundManager.getInterestFeesUnclaimed() - unclaimedRewardAmount;
+                fundDelegator.getTotalUnclaimedRebalancerFees() -
+                    unclaimedRewardAmount;
 
             address previousRebalancer = epochRebalancers[lastRebalance];
 
@@ -176,24 +138,7 @@ contract Semicen is Ownable {
             emit RewardsEarned(previousRebalancer, feesEarned);
         }
 
-        // Execute rebalance steps
-        for (uint256 i = 0; i < steps.length; i++) {
-            if (steps[i].actionCode == 0) {
-                fundController.depositToPool(
-                    steps[i].liquidityPool,
-                    steps[i].currencyCode,
-                    steps[i].amount
-                );
-            }
-
-            if (steps[i].actionCode == 1) {
-                fundController.withdrawFromPool(
-                    steps[i].liquidityPool,
-                    steps[i].currencyCode,
-                    steps[i].amount
-                );
-            }
-        }
+        fundDelegator.performSteps(steps);
 
         uint256 timestamp = block.timestamp;
 
@@ -223,7 +168,7 @@ contract Semicen is Ownable {
         unclaimedRewardAmount -= rewardsToClaim;
 
         // Send the interest to the sender.
-        fundManager.withdrawInterestFees(rewardsToClaim, msg.sender);
+        fundDelegator.withdrawRebalancerFees(rewardsToClaim, msg.sender);
 
         emit RewardsClaimed(msg.sender, rewardsToClaim);
     }

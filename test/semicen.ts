@@ -9,10 +9,11 @@ import timeMachine from "ganache-time-traveler";
 
 import { artifacts, contract, web3 } from "hardhat";
 import {
-  MockFundControllerContract,
   MockFundManagerContract,
+  MockFundControllerContract,
   SemicenContract,
   SemicenInstance,
+  RariDelegatorContract,
 } from "../typechain";
 
 const Semicen: SemicenContract = artifacts.require("Semicen");
@@ -20,6 +21,9 @@ const Semicen: SemicenContract = artifacts.require("Semicen");
 const MockFundController: MockFundControllerContract = artifacts.require(
   "MockFundController"
 );
+
+const RariDelegator: RariDelegatorContract = artifacts.require("RariDelegator");
+
 const MockFundManager: MockFundManagerContract = artifacts.require(
   "MockFundManager"
 );
@@ -27,21 +31,30 @@ const MockFundManager: MockFundManagerContract = artifacts.require(
 const minEpochLength = 21600;
 const claimRewardsTimelock = 604800;
 
+const nullAddress = "0x0000000000000000000000000000000000000000";
+
 contract("Semicen", (accounts) => {
   let [deployer, rebalancer1, rebalancer2, rebalancer3, random] = accounts;
 
   let semicen: SemicenInstance;
 
   before(async () => {
-    const mockFundController = await MockFundController.new();
     const mockFundManager = await MockFundManager.new();
+    const mockFundController = await MockFundController.new();
+
+    const rariDelegator = await RariDelegator.new(
+      mockFundController.address,
+      mockFundManager.address,
+      nullAddress
+    );
 
     semicen = await Semicen.new(
       minEpochLength,
       claimRewardsTimelock,
-      mockFundController.address,
-      mockFundManager.address
+      rariDelegator.address
     );
+
+    await rariDelegator.setSemicen(semicen.address);
   });
 
   it("adds the deployer as a rebalancer by default", async function () {
@@ -183,14 +196,6 @@ contract("Semicen", (accounts) => {
     semicen
       .rebalancerUnclaimedRewards(rebalancer2)
       .should.eventually.bnEqual(0);
-  });
-
-  it("allows setting fund contracts", async () => {
-    const mockFundController2 = await MockFundController.new();
-    const mockFundManager2 = await MockFundManager.new();
-
-    await semicen.setFundController(mockFundController2.address);
-    await semicen.setFundManager(mockFundManager2.address);
   });
 
   it("allows setting the epoch length and reward timelock", async () => {
