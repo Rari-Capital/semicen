@@ -10,7 +10,7 @@ contract MockFundController is FundController {
         string calldata currencyCode,
         uint256 amount
     ) external override {
-        console.log("Deposit amount-symbol-pool ", amount, currencyCode, pool);
+        console.log("Deposit: amount-symbol-pool", amount, currencyCode, pool);
     }
 
     function withdrawFromPool(
@@ -18,6 +18,6 @@ contract MockFundController is FundController {
         string calldata currencyCode,
         uint256 amount
     ) external override {
-        console.log("Withdraw amount-symbol-pool ", amount, currencyCode, pool);
+        console.log("Withdraw: amount-symbol-pool", amount, currencyCode, pool);
     }
 }

@@ -5,14 +5,23 @@ import "../interfaces/FundManager.sol";
 import "hardhat/console.sol";
 
 contract MockFundManager is FundManager {
-    function getInterestFeesUnclaimed() external override returns (uint256) {
-        return 200;
+    uint256 lastWithdraw = block.timestamp;
+
+    function getInterestFeesUnclaimed()
+        external
+        view
+        override
+        returns (uint256)
+    {
+        return block.timestamp - lastWithdraw;
     }
 
     function withdrawInterestFees(uint256 amount, address to)
         external
         override
     {
-        console.log("Withdrawing ", amount, " USD to: ", to);
+        lastWithdraw = block.timestamp;
+
+        console.log("Reward", amount, "USD to:", to);
     }
 }

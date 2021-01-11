@@ -89,13 +89,6 @@ contract Semicen is Ownable {
         addRebalancer(msg.sender);
     }
 
-    /// @notice Updates the fundManager variable. Only the only can update.
-    /// @param newFundManager The new fundManager.
-    function setFundManager(FundManager newFundManager) external onlyOwner {
-        fundManager = newFundManager;
-        emit FundManagerUpdated(address(newFundManager));
-    }
-
     /// @notice Updates the fundController variable. Only the only can update.
     /// @param newFundController The new fundController.
     function setFundController(FundController newFundController)
@@ -104,6 +97,13 @@ contract Semicen is Ownable {
     {
         fundController = newFundController;
         emit FundControllerUpdated(address(newFundController));
+    }
+
+    /// @notice Updates the fundManager variable. Only the only can update.
+    /// @param newFundManager The new fundManager.
+    function setFundManager(FundManager newFundManager) external onlyOwner {
+        fundManager = newFundManager;
+        emit FundManagerUpdated(address(newFundManager));
     }
 
     /// @notice Updates the minEpochLength variable. Only the only can update.
@@ -136,7 +136,7 @@ contract Semicen is Ownable {
 
     /// @notice Returns true if at this current time if the minEpochDuration has passed and the pool will accept a new rebalance.
     function hasEpochExpired() public view returns (bool) {
-        return block.timestamp > (lastRebalance + minEpochLength);
+        return block.timestamp >= (lastRebalance + minEpochLength);
     }
 
     /// @dev A struct with properties that correspond to the arguments of depositToPool() and withdrawFromPool()
@@ -156,7 +156,7 @@ contract Semicen is Ownable {
 
         require(
             hasEpochExpired(),
-            "You must wait out the min full epoch duration."
+            "You must wait out the full min epoch duration."
         );
 
         // If this is not the first rebalance, increment the last rebalancer's unclaimed rewards by the amount of fees earned.
@@ -186,6 +186,8 @@ contract Semicen is Ownable {
 
         lastRebalance = timestamp;
 
+        rebalancerLastRebalance[msg.sender] = timestamp;
+
         epochRebalancers[timestamp] = msg.sender;
 
         emit Rebalance(msg.sender);
@@ -194,7 +196,7 @@ contract Semicen is Ownable {
     /// @notice Claims all rewards earned (transfers fees earned in the form of erc20s/eth back to the sender)
     function claimRewards() external {
         require(
-            (block.timestamp - rebalancerLastRebalance[msg.sender]) >
+            (block.timestamp - rebalancerLastRebalance[msg.sender]) >=
                 rewardClaimTimelock,
             "You must stop rebalancing and wait out the reward claim timelock before claiming."
         );
@@ -221,15 +223,15 @@ contract Semicen is Ownable {
         onlyOwner
     {
         require(
-            amount >= rebalancerUnclaimedRewards[rewardHolder],
+            rebalancerUnclaimedRewards[rewardHolder] >= amount,
             "This reward holder does not have enough rewards to seize this amount"
         );
 
         // Remove the amount from the rewardHolder
-        rebalancerUnclaimedRewards[rewardHolder] - amount;
+        rebalancerUnclaimedRewards[rewardHolder] -= amount;
 
         // Transfer the removed rewards to the owner of the contract.
-        rebalancerUnclaimedRewards[owner()] += amount;
+        rebalancerUnclaimedRewards[msg.sender] += amount;
 
         emit RewardsSeized(rewardHolder, amount);
     }
