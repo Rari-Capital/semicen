@@ -30,6 +30,9 @@ contract Semicen is Ownable {
     /// @notice Maps each rebalancer (current or past) to the timestamp of their last rebalance.
     mapping(address => uint256) public rebalancerLastRebalance;
 
+    /// @notice Emitted when the fund delegator is updated via setFundDelegator()
+    event FundDelegatorUpdated(address indexed newFundDelegator);
+
     /// @notice Emitted when the min epoch length is updated via setMinEpochLength()
     event MinEpochLengthUpdated(uint256 newMinEpochLength);
 
@@ -37,8 +40,7 @@ contract Semicen is Ownable {
     event RewardClaimTimelockUpdated(uint256 newTimelock);
 
     /// @notice Emitted when a rebalance is conducted.
-    /// @param rebalancer The address who called the rebalance() function.
-    event Rebalance(address indexed rebalancer);
+    event Rebalance(address indexed rebalancer, FundDelegator.Steps[] steps);
 
     /// @notice Emitted when a rebalancer is added via addRebalancer()
     event RebalancerAdded(address indexed newRebalancer);
@@ -75,6 +77,16 @@ contract Semicen is Ownable {
         fundDelegator = _fundDelegator;
 
         addRebalancer(msg.sender);
+    }
+
+    /// @notice Updates the fundDelegator variable. Only the owner can update.
+    /// @param newFundDelegator The new FundDelegator instance this Semicen will interact with.
+    function setFundDelegator(FundDelegator newFundDelegator)
+        external
+        onlyOwner
+    {
+        fundDelegator = newFundDelegator;
+        emit FundDelegatorUpdated(address(newFundDelegator));
     }
 
     /// @notice Updates the minEpochLength variable. Only the owner can update.
@@ -148,7 +160,7 @@ contract Semicen is Ownable {
 
         epochRebalancers[timestamp] = msg.sender;
 
-        emit Rebalance(msg.sender);
+        emit Rebalance(msg.sender, steps);
     }
 
     /// @notice Claims all rewards earned (transfers fees earned in the form of erc20s/eth back to the sender)
