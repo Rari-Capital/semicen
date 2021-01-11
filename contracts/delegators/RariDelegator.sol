@@ -11,7 +11,11 @@ contract RariDelegator is FundDelegator {
         address _semisen
     ) FundDelegator(_fundController, _fundManager, _semisen) {}
 
-    function performSteps(Steps[] calldata steps) public override onlySemicen {
+    function performSteps(Steps[] calldata steps)
+        external
+        override
+        onlySemicen
+    {
         for (uint256 i = 0; i < steps.length; i++) {
             if (steps[i].actionCode == 0) {
                 fundController.depositToPool(

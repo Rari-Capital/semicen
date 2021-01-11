@@ -7,7 +7,7 @@ import "./delegators/FundDelegator.sol";
 
 contract Semicen is Ownable {
     /// @dev The FundDelegator instance this Semicen will interact with.
-    FundDelegator internal fundDelegator;
+    FundDelegator public fundDelegator;
 
     /// @notice Timestamp in seconds when the last rebalance occured.
     uint256 public lastRebalance;

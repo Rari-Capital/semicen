@@ -15,6 +15,7 @@ import {
   SemicenInstance,
   RariDelegatorContract,
 } from "../typechain";
+import { nullAddress } from "../utils";
 
 const Semicen: SemicenContract = artifacts.require("Semicen");
 
@@ -30,8 +31,6 @@ const MockFundManager: MockFundManagerContract = artifacts.require(
 
 const minEpochLength = 21600;
 const claimRewardsTimelock = 604800;
-
-const nullAddress = "0x0000000000000000000000000000000000000000";
 
 contract("Semicen", (accounts) => {
   let [deployer, rebalancer1, rebalancer2, rebalancer3, random] = accounts;

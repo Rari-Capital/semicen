@@ -26,13 +26,13 @@ interface FundManager {
 
 abstract contract FundDelegator is Ownable {
     /// @dev The fundController instance this Semicen will interact with.
-    FundController internal fundController;
+    FundController public fundController;
 
     /// @dev The FundManager instance this Semicen will interact with.
-    FundManager internal fundManager;
+    FundManager public fundManager;
 
     /// @dev The Semicen contract that will delegate it's steps to this contract for execution.
-    address internal semicen;
+    address public semicen;
 
     /// @notice Emitted when the fundController variable is updated via setFundController()
     event FundControllerUpdated(address indexed newFundController);

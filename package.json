@@ -7,9 +7,9 @@
     "test": "hardhat test",
     "coverage": "hardhat coverage && npm run open-coverage-report",
     "open-coverage-report": "if [ $(uname) = 'Darwin' ]; then open ./coverage/index.html; fi",
-    "deploy-kovan": "hardhat run --network kovan scripts/deploy.ts",
-    "deploy-ropsten": "hardhat run --network ropsten scripts/deploy.ts",
-    "deploy-mainnet": "hardhat run --network mainnet scripts/deploy.ts"
+    "deploy-semicen": "hardhat deploy-semicen",
+    "deploy-delegator": "hardhat deploy-delegator",
+    "deploy-semicen-and-delegator": "hardhat deploy-semicen-and-delegator"
   },
   "author": "t11s",
   "license": "AGPL-3.0-only",
