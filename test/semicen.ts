@@ -211,4 +211,14 @@ contract("Semicen", (accounts) => {
       .rewardClaimTimelock()
       .should.eventually.bnEqual(newClaimTimelock);
   });
+
+  it("allows setting the fund delegator", async () => {
+    const rariDelegator2 = await RariDelegator.new(
+      nullAddress,
+      nullAddress,
+      semicen.address
+    );
+
+    await semicen.setFundDelegator(rariDelegator2.address);
+  });
 });
