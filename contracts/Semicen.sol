@@ -139,8 +139,11 @@ contract Semicen is Ownable {
         return block.timestamp >= (lastRebalance + minEpochLength);
     }
 
-    /// @dev A struct with properties that correspond to the arguments of depositToPool() and withdrawFromPool()
-    struct Allocation {
+    /// @dev A struct that contains the details neccessary to call any of the possible action code's corresponding functions on the FundController.
+    struct Steps {
+        // 0: Deposit
+        // 1: Withdraw
+        uint256 actionCode;
         uint256 liquidityPool;
         string currencyCode;
         uint256 amount;
@@ -148,7 +151,7 @@ contract Semicen is Ownable {
 
     /// @notice Performs a rebalance by shifting the pool's allocations.
     /// @notice The rebalancer will get the fees earned from their rebalance when the next one takes place.
-    function rebalance(Allocation[] calldata allocations) public {
+    function rebalance(Steps[] calldata steps) public {
         require(
             trustedRebalancers[msg.sender],
             "You must be a trusted rebalancer!"
@@ -173,13 +176,23 @@ contract Semicen is Ownable {
             emit RewardsEarned(previousRebalancer, feesEarned);
         }
 
-        // TODO: TESTING MOCK THIS WON'T WORK
-        for (uint256 i = 0; i < allocations.length; i++) {
-            fundController.depositToPool(
-                allocations[i].liquidityPool,
-                allocations[i].currencyCode,
-                allocations[i].amount
-            );
+        // Execute rebalance steps
+        for (uint256 i = 0; i < steps.length; i++) {
+            if (steps[i].actionCode == 0) {
+                fundController.depositToPool(
+                    steps[i].liquidityPool,
+                    steps[i].currencyCode,
+                    steps[i].amount
+                );
+            }
+
+            if (steps[i].actionCode == 1) {
+                fundController.withdrawFromPool(
+                    steps[i].liquidityPool,
+                    steps[i].currencyCode,
+                    steps[i].amount
+                );
+            }
         }
 
         uint256 timestamp = block.timestamp;

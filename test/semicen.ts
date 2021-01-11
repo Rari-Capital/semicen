@@ -69,9 +69,12 @@ contract("Semicen", (accounts) => {
 
   it("does not allow non trusted rebalancers to rebalance", async () => {
     await semicen
-      .rebalance([{ liquidityPool: 0, currencyCode: "DAI", amount: 0 }], {
-        from: random,
-      })
+      .rebalance(
+        [{ actionCode: 1, liquidityPool: 0, currencyCode: "DAI", amount: 0 }],
+        {
+          from: random,
+        }
+      )
       .should.be.rejectedWith("must be a trusted rebalancer");
   });
 
@@ -79,7 +82,7 @@ contract("Semicen", (accounts) => {
     await semicen.hasEpochExpired().should.become(true);
 
     const tx = await semicen.rebalance(
-      [{ liquidityPool: 1, currencyCode: "USDC", amount: 1000 }],
+      [{ actionCode: 1, liquidityPool: 1, currencyCode: "USDC", amount: 1000 }],
       { from: rebalancer1 }
     );
 
@@ -95,9 +98,19 @@ contract("Semicen", (accounts) => {
 
   it("shoud not allow rebalances before the min epoch length is over", async function () {
     await semicen
-      .rebalance([{ liquidityPool: 1, currencyCode: "USDC", amount: 1000 }], {
-        from: rebalancer2,
-      })
+      .rebalance(
+        [
+          {
+            actionCode: 0,
+            liquidityPool: 1,
+            currencyCode: "USDC",
+            amount: 1000,
+          },
+        ],
+        {
+          from: rebalancer2,
+        }
+      )
       .should.eventually.be.rejectedWith(
         "wait out the full min epoch duration"
       );
@@ -111,7 +124,10 @@ contract("Semicen", (accounts) => {
     await timeMachine.advanceTimeAndBlock(minEpochLength);
 
     await semicen.rebalance(
-      [{ liquidityPool: 1, currencyCode: "DAI", amount: 1000 }],
+      [
+        { actionCode: 1, liquidityPool: 1, currencyCode: "DAI", amount: 1000 },
+        { actionCode: 0, liquidityPool: 0, currencyCode: "DAI", amount: 1000 },
+      ],
       { from: rebalancer2 }
     );
 
@@ -152,7 +168,7 @@ contract("Semicen", (accounts) => {
     await timeMachine.advanceTimeAndBlock(minEpochLength);
 
     await semicen.rebalance(
-      [{ liquidityPool: 1, currencyCode: "USDT", amount: 500 }],
+      [{ actionCode: 0, liquidityPool: 1, currencyCode: "USDT", amount: 500 }],
       { from: rebalancer2 }
     );
 
