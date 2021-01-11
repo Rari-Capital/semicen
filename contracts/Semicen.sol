@@ -3,7 +3,7 @@ pragma solidity 0.7.3;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "./interfaces/FundDelegator.sol";
+import "./delegators/FundDelegator.sol";
 
 contract Semicen is Ownable {
     /// @dev The FundDelegator instance this Semicen will interact with.
