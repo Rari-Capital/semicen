@@ -2,6 +2,13 @@
 
 Consensus and reward contracts for Rari's 'semicen' rebalancer system.
 
+## Deployment:
+
+```bash
+npm run deploy-semicen-and-delegator -- --network kovan --epoch-length 21600 --reward-claim-timelock 604800 --fund-manager 0x0000000000000000000000000000000000000000 --fund-controller 0x0000000000000000000000000000000000000000
+```
+
+
 ## What is it?
 
 The `Semicen.sol` contract allows multiple trusted parties (determined by the contract owner) to rebalance a Rari Capital pool on a first-come, first "serve" basis and earn the fees generated during the time their rebalance was active.
