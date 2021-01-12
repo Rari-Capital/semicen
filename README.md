@@ -5,7 +5,7 @@ Consensus and reward contracts for Rari's 'semicen' rebalancer system.
 ## Deployment:
 
 ```bash
-npm run deploy-semicen-and-delegator -- --network kovan --epoch-length 21600 --reward-claim-timelock 604800 --fund-manager 0x0000000000000000000000000000000000000000 --fund-controller 0x0000000000000000000000000000000000000000
+npm run deploy-semicen-and-delegator -- --network mainnet --epoch-length 21600 --reward-claim-timelock 604800 --fund-manager 0x0000000000000000000000000000000000000000 --fund-controller 0x0000000000000000000000000000000000000000
 ```
 
 
