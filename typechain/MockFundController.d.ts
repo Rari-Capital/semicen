@@ -13,6 +13,11 @@ export interface MockFundControllerContract
 type AllEvents = never;
 
 export interface MockFundControllerInstance extends Truffle.ContractInstance {
+  c_0x945749f6(
+    c__0x945749f6: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<void>;
+
   depositToPool: {
     (
       pool: number | BN | string,
@@ -68,6 +73,11 @@ export interface MockFundControllerInstance extends Truffle.ContractInstance {
   };
 
   methods: {
+    c_0x945749f6(
+      c__0x945749f6: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+
     depositToPool: {
       (
         pool: number | BN | string,

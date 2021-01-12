@@ -13,7 +13,21 @@ export interface MockFundManagerContract
 type AllEvents = never;
 
 export interface MockFundManagerInstance extends Truffle.ContractInstance {
+  c_0x9cd22321(
+    c__0x9cd22321: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<void>;
+
   getInterestFeesUnclaimed: {
+    (txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+    sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
+    estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
+  };
+
+  getRebalancerPercentage: {
     (txDetails?: Truffle.TransactionDetails): Promise<
       Truffle.TransactionResponse<AllEvents>
     >;
@@ -46,7 +60,21 @@ export interface MockFundManagerInstance extends Truffle.ContractInstance {
   };
 
   methods: {
+    c_0x9cd22321(
+      c__0x9cd22321: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+
     getInterestFeesUnclaimed: {
+      (txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(txDetails?: Truffle.TransactionDetails): Promise<BN>;
+      sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
+      estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
+    };
+
+    getRebalancerPercentage: {
       (txDetails?: Truffle.TransactionDetails): Promise<
         Truffle.TransactionResponse<AllEvents>
       >;
