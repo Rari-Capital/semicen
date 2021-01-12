@@ -2,12 +2,36 @@
 
 Consensus and reward contracts for Rari's 'semicen' rebalancer system.
 
-## Deployment:
+## Deployment/Development:
+
+**1. Create a .env file and set the `GWEI_GAS_PRICE`, `PRIVATE_KEY`, `INFURA_KEY` and `ETHERSCAN_API_KEY` values.**
+
+```
+GWEI_GAS_PRICE=20
+
+PRIVATE_KEY=XXX
+
+INFURA_KEY=XXX
+ETHERSCAN_API_KEY=XXX
+COINMARKETCAP_API_KEY=XXX
+```
+
+**2. Run tests (+ with coverage)**
+
+```npm run test``` or ```npm run coverage```
+
+**3. Deploy contract(s)**
+
+To deploy a Semicen & RariDelegator contract run the command below:
 
 ```bash
 npm run deploy-semicen-and-delegator -- --network mainnet --epoch-length 21600 --reward-claim-timelock 604800 --fund-manager 0x0000000000000000000000000000000000000000 --fund-controller 0x0000000000000000000000000000000000000000
 ```
 
+- Make sure to choose an epoch length and claim timelock that you like as well as setting the fund manager and fund controller paramaters to valid addresses.
+- You can swap out `mainnet` for either `kovan` or `ropsten` for testing!
+
+You can also deploy a Semicen or RariDelegator contract invidually by running `npm run deploy-semicen` or `npm run deploy-delegator`.
 
 ## What is it?
 
