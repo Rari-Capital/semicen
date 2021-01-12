@@ -64,3 +64,11 @@ C) If a single rebalancer is not able to connect to the internet, any of the oth
 The Semicen contract is a temporary contract meant only to be used while the development of a more decentralized (but more complex) contract is underway. 
 
 This contract is still useful for the reasons listed in the section above but is not a truly decentralized rebalance mechanism. Work is underway on a contract which will be known as `CruiseController.sol` that will reach consensus via proof of stake, allow any RGT holder to participate and feature slashing and other punishments for misbehaviors. However, development time for `CruiseController.sol` is variable due to it's dependence on in-development L2 technologies, which is why the Semicen contract has been developed for use in the meantime. 
+
+## Architecture
+
+- The `Semicen.sol` contract is the only contract rebalancers will interact with. It manages access to the linked `FundController`'s `performSteps()` function (only allows trusted rebalancers, only after min epoch length has passed, etc) and keeps track of the rewards each rebalancer is entitled to. All `Semicen.sol` contracts are bi-directionally linked to a contract that implements the `FundDelegator.sol` abstract contract as mentioned above.
+
+- A FundDelegator contract interacts directly with a `FundManager` and `FundController` contract to calculate the amount of rebalancer fees earned and to perform  "steps" (an array of struct instances that correspond to function calls on the FundDelegator's `FundController` contract) that are sent from the Semicen contract.
+
+The reason for splitting these contracts in two is for upgradability. If a pool's liquidity is migrated to a new FundController to add functions for a new strategy, a new FundDelegator contract that adds support for that function can be created and linked to the same Semicen contract. This two contract solution decouples the reward and access control functionality of the Semicen contract from the logic of executing rebalance steps, which is ideal for Rari's pool system which may have constant strategy additions and updates. It is also more gas efficient as we do not have to redeploy a full new Semicen contract for each strategy update, and when a FundDelegator contract is destroyed, we receive a gas refund.
