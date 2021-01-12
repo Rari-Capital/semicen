@@ -4,7 +4,7 @@ pragma solidity 0.7.3;
 import "../delegators/FundDelegator.sol";
 import "hardhat/console.sol";
 
-contract MockFundController is FundController {
+contract MockFundController is IFundController {
     function depositToPool(
         uint256 pool,
         string calldata currencyCode,

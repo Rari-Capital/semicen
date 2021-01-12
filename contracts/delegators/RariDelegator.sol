@@ -6,8 +6,8 @@ import "./FundDelegator.sol";
 
 contract RariDelegator is FundDelegator {
     constructor(
-        FundController _fundController,
-        FundManager _fundManager,
+        IFundController _fundController,
+        IFundManager _fundManager,
         address _semisen
     ) FundDelegator(_fundController, _fundManager, _semisen) {}
 

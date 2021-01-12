@@ -4,7 +4,7 @@ pragma solidity 0.7.3;
 import "../delegators/FundDelegator.sol";
 import "hardhat/console.sol";
 
-contract MockFundManager is FundManager {
+contract MockFundManager is IFundManager {
     uint256 lastWithdraw = block.timestamp;
 
     function getInterestFeesUnclaimed() external override returns (uint256) {

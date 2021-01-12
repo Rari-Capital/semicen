@@ -4,7 +4,7 @@ pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-interface FundController {
+interface IFundController {
     function depositToPool(
         uint256 pool,
         string calldata currencyCode,
@@ -18,7 +18,7 @@ interface FundController {
     ) external;
 }
 
-interface FundManager {
+interface IFundManager {
     function getInterestFeesUnclaimed() external returns (uint256);
 
     function withdrawInterestFees(uint256 amount, address to) external;
@@ -26,10 +26,10 @@ interface FundManager {
 
 abstract contract FundDelegator is Ownable {
     /// @dev The fundController instance this Semicen will interact with.
-    FundController public fundController;
+    IFundController public fundController;
 
     /// @dev The FundManager instance this Semicen will interact with.
-    FundManager public fundManager;
+    IFundManager public fundManager;
 
     /// @dev The Semicen contract that will delegate it's steps to this contract for execution.
     address public semicen;
@@ -48,8 +48,8 @@ abstract contract FundDelegator is Ownable {
     /// @param _fundManager The FundManager instance this Semicen will interact with.
     /// @param _semicen The semicen contract that will delegate it's steps to this contract for execution.
     constructor(
-        FundController _fundController,
-        FundManager _fundManager,
+        IFundController _fundController,
+        IFundManager _fundManager,
         address _semicen
     ) {
         fundController = _fundController;
@@ -65,7 +65,7 @@ abstract contract FundDelegator is Ownable {
 
     /// @notice Updates the fundController variable. Only the owner can update.
     /// @param newFundController The new fundController.
-    function setFundController(FundController newFundController)
+    function setFundController(IFundController newFundController)
         external
         onlyOwner
     {
@@ -75,7 +75,7 @@ abstract contract FundDelegator is Ownable {
 
     /// @notice Updates the fundManager variable. Only the owner can update.
     /// @param newFundManager The new fundManager.
-    function setFundManager(FundManager newFundManager) external onlyOwner {
+    function setFundManager(IFundManager newFundManager) external onlyOwner {
         fundManager = newFundManager;
         emit FundManagerUpdated(address(newFundManager));
     }

@@ -3,9 +3,9 @@
 /* eslint-disable */
 
 import { OwnableContract } from "./Ownable";
-import { FundControllerContract } from "./FundController";
 import { FundDelegatorContract } from "./FundDelegator";
-import { FundManagerContract } from "./FundManager";
+import { IFundControllerContract } from "./IFundController";
+import { IFundManagerContract } from "./IFundManager";
 import { RariDelegatorContract } from "./RariDelegator";
 import { MockFundControllerContract } from "./MockFundController";
 import { MockFundManagerContract } from "./MockFundManager";
@@ -15,9 +15,9 @@ declare global {
   namespace Truffle {
     interface Artifacts {
       require(name: "Ownable"): OwnableContract;
-      require(name: "FundController"): FundControllerContract;
       require(name: "FundDelegator"): FundDelegatorContract;
-      require(name: "FundManager"): FundManagerContract;
+      require(name: "IFundController"): IFundControllerContract;
+      require(name: "IFundManager"): IFundManagerContract;
       require(name: "RariDelegator"): RariDelegatorContract;
       require(name: "MockFundController"): MockFundControllerContract;
       require(name: "MockFundManager"): MockFundManagerContract;
@@ -27,12 +27,12 @@ declare global {
 }
 
 export { OwnableContract, OwnableInstance } from "./Ownable";
-export {
-  FundControllerContract,
-  FundControllerInstance,
-} from "./FundController";
 export { FundDelegatorContract, FundDelegatorInstance } from "./FundDelegator";
-export { FundManagerContract, FundManagerInstance } from "./FundManager";
+export {
+  IFundControllerContract,
+  IFundControllerInstance,
+} from "./IFundController";
+export { IFundManagerContract, IFundManagerInstance } from "./IFundManager";
 export { RariDelegatorContract, RariDelegatorInstance } from "./RariDelegator";
 export {
   MockFundControllerContract,
