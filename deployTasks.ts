@@ -64,7 +64,7 @@ async function deploySemicen(
 
   const semicen = await Semicen.new(...constructorArgs);
 
-  importantLog("Deployed! Trying to verify in 5 seconds!");
+  importantLog("Deployed! Trying to verify in 10 seconds!");
 
   // Sleep for 10 seconds while Etherscan propogates.
   await sleep(10000);
@@ -114,7 +114,7 @@ async function deployDelegator(
 
   const delegator = await RariDelegator.new(...constructorArgs);
 
-  importantLog("Deployed! Trying to verify in 5 seconds!");
+  importantLog("Deployed! Trying to verify in 10 seconds!");
 
   // Sleep for 10 seconds while Etherscan propogates.
   await sleep(10000);
