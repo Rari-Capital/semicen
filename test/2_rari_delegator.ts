@@ -5,6 +5,7 @@ import {
   RariDelegatorContract,
   RariDelegatorInstance,
 } from "../typechain";
+import { nullAddress } from "../utils";
 
 const MockFundController: MockFundControllerContract = artifacts.require(
   "MockFundController"
@@ -41,10 +42,24 @@ contract("Semicen", (accounts) => {
   });
 
   it("only lets the semicen performSteps", async function () {
-    await delegator.performSteps([]);
-
     await delegator
       .performSteps([], { from: random })
       .should.be.rejectedWith("Only the Semicen can call this method");
+
+    await delegator.performSteps([]);
+  });
+
+  it("only lets the owner destroy the contract", async function () {
+    await delegator.owner().should.become(deployer);
+
+    await delegator
+      .destroy({ from: random })
+      .should.be.rejectedWith("caller is not the owner");
+
+    await delegator.destroy();
+
+    await delegator
+      .owner()
+      .should.be.rejectedWith("Returned values aren't valid");
   });
 });

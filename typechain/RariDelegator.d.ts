@@ -56,6 +56,25 @@ type AllEvents =
   | SemicenUpdated;
 
 export interface RariDelegatorInstance extends Truffle.ContractInstance {
+  c_0x30bf6ae5(
+    c__0x30bf6ae5: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<void>;
+
+  c_0xb6cc993a(
+    c__0xb6cc993a: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<void>;
+
+  destroy: {
+    (txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(txDetails?: Truffle.TransactionDetails): Promise<void>;
+    sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
+    estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
+  };
+
   fundController(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
   fundManager(txDetails?: Truffle.TransactionDetails): Promise<string>;
@@ -218,6 +237,25 @@ export interface RariDelegatorInstance extends Truffle.ContractInstance {
   };
 
   methods: {
+    c_0x30bf6ae5(
+      c__0x30bf6ae5: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+
+    c_0xb6cc993a(
+      c__0xb6cc993a: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+
+    destroy: {
+      (txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(txDetails?: Truffle.TransactionDetails): Promise<void>;
+      sendTransaction(txDetails?: Truffle.TransactionDetails): Promise<string>;
+      estimateGas(txDetails?: Truffle.TransactionDetails): Promise<number>;
+    };
+
     fundController(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
     fundManager(txDetails?: Truffle.TransactionDetails): Promise<string>;

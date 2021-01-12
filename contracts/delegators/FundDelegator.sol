@@ -57,6 +57,12 @@ abstract contract FundDelegator is Ownable {
         semicen = _semicen;
     }
 
+    /// @notice Destroys this contract and sends all its ether to the owner.
+    /// @notice Can only be called by the owner.
+    function destroy() public onlyOwner {
+        selfdestruct(msg.sender);
+    }
+
     /// @notice Updates the fundController variable. Only the owner can update.
     /// @param newFundController The new fundController.
     function setFundController(FundController newFundController)
