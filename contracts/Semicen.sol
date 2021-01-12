@@ -3,9 +3,12 @@ pragma solidity 0.7.3;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./delegators/FundDelegator.sol";
 
 contract Semicen is Ownable {
+    using SafeMath for uint256;
+
     /// @dev The FundDelegator instance this Semicen will interact with.
     FundDelegator public fundDelegator;
 
@@ -138,14 +141,17 @@ contract Semicen is Ownable {
         // If this is not the first rebalance, increment the last rebalancer's unclaimed rewards by the amount of fees earned.
         if (lastRebalance > 0) {
             uint256 feesEarned =
-                fundDelegator.getTotalUnclaimedRebalancerFees() -
-                    unclaimedRewardAmount;
+                fundDelegator.getTotalUnclaimedRebalancerFees().sub(
+                    unclaimedRewardAmount
+                );
 
             address previousRebalancer = epochRebalancers[lastRebalance];
 
-            rebalancerUnclaimedRewards[previousRebalancer] += feesEarned;
+            rebalancerUnclaimedRewards[
+                previousRebalancer
+            ] = rebalancerUnclaimedRewards[previousRebalancer].add(feesEarned);
 
-            unclaimedRewardAmount += feesEarned;
+            unclaimedRewardAmount = unclaimedRewardAmount.add(feesEarned);
 
             emit RewardsEarned(previousRebalancer, feesEarned);
         }
@@ -177,7 +183,7 @@ contract Semicen is Ownable {
         delete rebalancerUnclaimedRewards[msg.sender];
 
         // Lower the unclaimed reward amount by the amount being claimed.
-        unclaimedRewardAmount -= rewardsToClaim;
+        unclaimedRewardAmount = unclaimedRewardAmount.sub(rewardsToClaim);
 
         // Send the interest to the sender.
         fundDelegator.withdrawRebalancerFees(rewardsToClaim, msg.sender);
@@ -201,7 +207,10 @@ contract Semicen is Ownable {
         rebalancerUnclaimedRewards[rewardHolder] -= amount;
 
         // Transfer the removed rewards to the owner of the contract.
-        rebalancerUnclaimedRewards[msg.sender] += amount;
+        rebalancerUnclaimedRewards[msg.sender] = rebalancerUnclaimedRewards[
+            msg.sender
+        ]
+            .add(amount);
 
         emit RewardsSeized(rewardHolder, amount);
     }

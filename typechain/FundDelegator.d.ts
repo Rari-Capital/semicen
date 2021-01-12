@@ -51,11 +51,6 @@ type AllEvents =
   | SemicenUpdated;
 
 export interface FundDelegatorInstance extends Truffle.ContractInstance {
-  c_0x30bf6ae5(
-    c__0x30bf6ae5: string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<void>;
-
   destroy: {
     (txDetails?: Truffle.TransactionDetails): Promise<
       Truffle.TransactionResponse<AllEvents>
@@ -227,11 +222,6 @@ export interface FundDelegatorInstance extends Truffle.ContractInstance {
   };
 
   methods: {
-    c_0x30bf6ae5(
-      c__0x30bf6ae5: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-
     destroy: {
       (txDetails?: Truffle.TransactionDetails): Promise<
         Truffle.TransactionResponse<AllEvents>

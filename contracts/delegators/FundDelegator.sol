@@ -3,6 +3,7 @@ pragma solidity 0.7.3;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/math/SafeMath.sol";
 
 interface IFundController {
     function depositToPool(
@@ -19,12 +20,16 @@ interface IFundController {
 }
 
 interface IFundManager {
+    function getRebalancerPercentage() external returns (uint256);
+
     function getInterestFeesUnclaimed() external returns (uint256);
 
     function withdrawInterestFees(uint256 amount, address to) external;
 }
 
 abstract contract FundDelegator is Ownable {
+    using SafeMath for uint256;
+
     /// @dev The fundController instance this Semicen will interact with.
     IFundController public fundController;
 
@@ -89,8 +94,11 @@ abstract contract FundDelegator is Ownable {
 
     /// @notice Returns the the total amount of unclaimed fees rebalancers are entitled to.
     function getTotalUnclaimedRebalancerFees() external returns (uint256) {
-        // TODO: ACCOUNT FOR % THAT GOES TO REBALANCERS
-        return fundManager.getInterestFeesUnclaimed();
+        return
+            fundManager
+                .getInterestFeesUnclaimed()
+                .mul(fundManager.getRebalancerPercentage())
+                .div(1e18);
     }
 
     modifier onlySemicen {
