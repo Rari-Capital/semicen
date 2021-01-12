@@ -31,7 +31,7 @@ npm run deploy-semicen-and-delegator -- --network mainnet --epoch-length 21600 -
 - Make sure to choose an epoch length and claim timelock that you like as well as setting the fund manager and fund controller paramaters to valid addresses.
 - You can swap out `mainnet` for either `kovan` or `ropsten` for testing!
 
-You can also deploy a Semicen or RariDelegator contract invidually by running `npm run deploy-semicen` or `npm run deploy-delegator` (these commands require flags! Run `npx hardhat help deploy-semicen` or `npx hardhat help deploy-delegator` to learn more)
+You can also deploy a Semicen or RariDelegator contract invidually by running `npm run deploy-semicen` or `npm run deploy-delegator` **(these commands require flags! run `npx hardhat help deploy-semicen` or `npx hardhat help deploy-delegator` to learn more)**
 
 ## What is it?
 
