@@ -47,14 +47,16 @@ export interface Rebalance {
     steps: {
       actionCode: BN;
       liquidityPool: BN;
-      currencyCode: string;
+      inputCurrencyCode: string;
+      outputCurrencyCode: string;
       amount: BN;
     }[];
     0: string;
     1: {
       actionCode: BN;
       liquidityPool: BN;
-      currencyCode: string;
+      inputCurrencyCode: string;
+      outputCurrencyCode: string;
       amount: BN;
     }[];
   };
@@ -145,6 +147,11 @@ export interface SemicenInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
+  c_0x2e703585(
+    c__0x2e703585: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<void>;
+
   claimRewards: {
     (txDetails?: Truffle.TransactionDetails): Promise<
       Truffle.TransactionResponse<AllEvents>
@@ -174,7 +181,8 @@ export interface SemicenInstance extends Truffle.ContractInstance {
       steps: {
         actionCode: number | BN | string;
         liquidityPool: number | BN | string;
-        currencyCode: string;
+        inputCurrencyCode: string;
+        outputCurrencyCode: string;
         amount: number | BN | string;
       }[],
       txDetails?: Truffle.TransactionDetails
@@ -183,7 +191,8 @@ export interface SemicenInstance extends Truffle.ContractInstance {
       steps: {
         actionCode: number | BN | string;
         liquidityPool: number | BN | string;
-        currencyCode: string;
+        inputCurrencyCode: string;
+        outputCurrencyCode: string;
         amount: number | BN | string;
       }[],
       txDetails?: Truffle.TransactionDetails
@@ -192,7 +201,8 @@ export interface SemicenInstance extends Truffle.ContractInstance {
       steps: {
         actionCode: number | BN | string;
         liquidityPool: number | BN | string;
-        currencyCode: string;
+        inputCurrencyCode: string;
+        outputCurrencyCode: string;
         amount: number | BN | string;
       }[],
       txDetails?: Truffle.TransactionDetails
@@ -201,7 +211,8 @@ export interface SemicenInstance extends Truffle.ContractInstance {
       steps: {
         actionCode: number | BN | string;
         liquidityPool: number | BN | string;
-        currencyCode: string;
+        inputCurrencyCode: string;
+        outputCurrencyCode: string;
         amount: number | BN | string;
       }[],
       txDetails?: Truffle.TransactionDetails
@@ -368,6 +379,11 @@ export interface SemicenInstance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
+    c_0x2e703585(
+      c__0x2e703585: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+
     claimRewards: {
       (txDetails?: Truffle.TransactionDetails): Promise<
         Truffle.TransactionResponse<AllEvents>
@@ -397,7 +413,8 @@ export interface SemicenInstance extends Truffle.ContractInstance {
         steps: {
           actionCode: number | BN | string;
           liquidityPool: number | BN | string;
-          currencyCode: string;
+          inputCurrencyCode: string;
+          outputCurrencyCode: string;
           amount: number | BN | string;
         }[],
         txDetails?: Truffle.TransactionDetails
@@ -406,7 +423,8 @@ export interface SemicenInstance extends Truffle.ContractInstance {
         steps: {
           actionCode: number | BN | string;
           liquidityPool: number | BN | string;
-          currencyCode: string;
+          inputCurrencyCode: string;
+          outputCurrencyCode: string;
           amount: number | BN | string;
         }[],
         txDetails?: Truffle.TransactionDetails
@@ -415,7 +433,8 @@ export interface SemicenInstance extends Truffle.ContractInstance {
         steps: {
           actionCode: number | BN | string;
           liquidityPool: number | BN | string;
-          currencyCode: string;
+          inputCurrencyCode: string;
+          outputCurrencyCode: string;
           amount: number | BN | string;
         }[],
         txDetails?: Truffle.TransactionDetails
@@ -424,7 +443,8 @@ export interface SemicenInstance extends Truffle.ContractInstance {
         steps: {
           actionCode: number | BN | string;
           liquidityPool: number | BN | string;
-          currencyCode: string;
+          inputCurrencyCode: string;
+          outputCurrencyCode: string;
           amount: number | BN | string;
         }[],
         txDetails?: Truffle.TransactionDetails

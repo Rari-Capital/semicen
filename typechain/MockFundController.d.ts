@@ -13,6 +13,61 @@ export interface MockFundControllerContract
 type AllEvents = never;
 
 export interface MockFundControllerInstance extends Truffle.ContractInstance {
+  approveToMUsd: {
+    (
+      currencyCode: string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      currencyCode: string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      currencyCode: string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      currencyCode: string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  approveToPool: {
+    (
+      pool: number | BN | string,
+      currencyCode: string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      pool: number | BN | string,
+      currencyCode: string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      pool: number | BN | string,
+      currencyCode: string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      pool: number | BN | string,
+      currencyCode: string,
+      amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  c_0x945749f6(
+    c__0x945749f6: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<void>;
+
   depositToPool: {
     (
       pool: number | BN | string,
@@ -36,6 +91,33 @@ export interface MockFundControllerInstance extends Truffle.ContractInstance {
       pool: number | BN | string,
       currencyCode: string,
       amount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  swapMStable: {
+    (
+      inputCurrencyCode: string,
+      outputCurrencyCode: string,
+      inputAmount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    call(
+      inputCurrencyCode: string,
+      outputCurrencyCode: string,
+      inputAmount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      inputCurrencyCode: string,
+      outputCurrencyCode: string,
+      inputAmount: number | BN | string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      inputCurrencyCode: string,
+      outputCurrencyCode: string,
+      inputAmount: number | BN | string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -68,6 +150,61 @@ export interface MockFundControllerInstance extends Truffle.ContractInstance {
   };
 
   methods: {
+    approveToMUsd: {
+      (
+        currencyCode: string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        currencyCode: string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        currencyCode: string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        currencyCode: string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    approveToPool: {
+      (
+        pool: number | BN | string,
+        currencyCode: string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        pool: number | BN | string,
+        currencyCode: string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        pool: number | BN | string,
+        currencyCode: string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        pool: number | BN | string,
+        currencyCode: string,
+        amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    c_0x945749f6(
+      c__0x945749f6: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+
     depositToPool: {
       (
         pool: number | BN | string,
@@ -91,6 +228,33 @@ export interface MockFundControllerInstance extends Truffle.ContractInstance {
         pool: number | BN | string,
         currencyCode: string,
         amount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    swapMStable: {
+      (
+        inputCurrencyCode: string,
+        outputCurrencyCode: string,
+        inputAmount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      call(
+        inputCurrencyCode: string,
+        outputCurrencyCode: string,
+        inputAmount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        inputCurrencyCode: string,
+        outputCurrencyCode: string,
+        inputAmount: number | BN | string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        inputCurrencyCode: string,
+        outputCurrencyCode: string,
+        inputAmount: number | BN | string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };

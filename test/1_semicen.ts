@@ -82,7 +82,15 @@ contract("Semicen", (accounts) => {
   it("does not allow non trusted rebalancers to rebalance", async () => {
     await semicen
       .rebalance(
-        [{ actionCode: 1, liquidityPool: 0, currencyCode: "DAI", amount: 0 }],
+        [
+          {
+            actionCode: 1,
+            liquidityPool: 0,
+            inputCurrencyCode: "DAI",
+            outputCurrencyCode: "",
+            amount: 0,
+          },
+        ],
         {
           from: random,
         }
@@ -94,7 +102,22 @@ contract("Semicen", (accounts) => {
     await semicen.hasEpochExpired().should.become(true);
 
     const tx = await semicen.rebalance(
-      [{ actionCode: 1, liquidityPool: 1, currencyCode: "USDC", amount: 1000 }],
+      [
+        {
+          actionCode: 0,
+          liquidityPool: 0,
+          inputCurrencyCode: "USDC",
+          outputCurrencyCode: "",
+          amount: 1000,
+        },
+        {
+          actionCode: 1,
+          liquidityPool: 1,
+          inputCurrencyCode: "USDC",
+          outputCurrencyCode: "",
+          amount: 1000,
+        },
+      ],
       { from: rebalancer1 }
     );
 
@@ -113,9 +136,10 @@ contract("Semicen", (accounts) => {
       .rebalance(
         [
           {
-            actionCode: 0,
+            actionCode: 2,
             liquidityPool: 1,
-            currencyCode: "USDC",
+            inputCurrencyCode: "USDC",
+            outputCurrencyCode: "",
             amount: 1000,
           },
         ],
@@ -137,8 +161,27 @@ contract("Semicen", (accounts) => {
 
     await semicen.rebalance(
       [
-        { actionCode: 1, liquidityPool: 1, currencyCode: "DAI", amount: 1000 },
-        { actionCode: 0, liquidityPool: 0, currencyCode: "DAI", amount: 1000 },
+        {
+          actionCode: 2,
+          liquidityPool: 1,
+          inputCurrencyCode: "USDC",
+          outputCurrencyCode: "",
+          amount: 1000,
+        },
+        {
+          actionCode: 3,
+          liquidityPool: 0,
+          inputCurrencyCode: "USDT",
+          outputCurrencyCode: "",
+          amount: 1000,
+        },
+        {
+          actionCode: 4,
+          liquidityPool: 0,
+          inputCurrencyCode: "USDT",
+          outputCurrencyCode: "USDC",
+          amount: 1000,
+        },
       ],
       { from: rebalancer2 }
     );
@@ -180,7 +223,15 @@ contract("Semicen", (accounts) => {
     await timeMachine.advanceTimeAndBlock(minEpochLength);
 
     await semicen.rebalance(
-      [{ actionCode: 0, liquidityPool: 1, currencyCode: "USDT", amount: 500 }],
+      [
+        {
+          actionCode: 2,
+          liquidityPool: 1,
+          inputCurrencyCode: "USDT",
+          outputCurrencyCode: "",
+          amount: 500,
+        },
+      ],
       { from: rebalancer2 }
     );
 

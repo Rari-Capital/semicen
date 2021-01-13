@@ -6,6 +6,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 
 interface IFundController {
+    function approveToPool(
+        uint256 pool,
+        string calldata currencyCode,
+        uint256 amount
+    ) external;
+
     function depositToPool(
         uint256 pool,
         string calldata currencyCode,
@@ -16,6 +22,15 @@ interface IFundController {
         uint256 pool,
         string calldata currencyCode,
         uint256 amount
+    ) external;
+
+    function approveToMUsd(string calldata currencyCode, uint256 amount)
+        external;
+
+    function swapMStable(
+        string calldata inputCurrencyCode,
+        string calldata outputCurrencyCode,
+        uint256 inputAmount
     ) external;
 }
 
@@ -122,11 +137,10 @@ abstract contract FundDelegator is Ownable {
 
     /// @dev A struct that contains the details neccessary to call any of the possible action code's corresponding functions on the FundController.
     struct Steps {
-        // 0: Deposit
-        // 1: Withdraw
         uint256 actionCode;
         uint256 liquidityPool;
-        string currencyCode;
+        string inputCurrencyCode;
+        string outputCurrencyCode;
         uint256 amount;
     }
 

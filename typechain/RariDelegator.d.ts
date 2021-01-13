@@ -56,6 +56,16 @@ type AllEvents =
   | SemicenUpdated;
 
 export interface RariDelegatorInstance extends Truffle.ContractInstance {
+  c_0x30bf6ae5(
+    c__0x30bf6ae5: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<void>;
+
+  c_0xb6cc993a(
+    c__0xb6cc993a: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<void>;
+
   destroy: {
     (txDetails?: Truffle.TransactionDetails): Promise<
       Truffle.TransactionResponse<AllEvents>
@@ -85,7 +95,8 @@ export interface RariDelegatorInstance extends Truffle.ContractInstance {
       steps: {
         actionCode: number | BN | string;
         liquidityPool: number | BN | string;
-        currencyCode: string;
+        inputCurrencyCode: string;
+        outputCurrencyCode: string;
         amount: number | BN | string;
       }[],
       txDetails?: Truffle.TransactionDetails
@@ -94,7 +105,8 @@ export interface RariDelegatorInstance extends Truffle.ContractInstance {
       steps: {
         actionCode: number | BN | string;
         liquidityPool: number | BN | string;
-        currencyCode: string;
+        inputCurrencyCode: string;
+        outputCurrencyCode: string;
         amount: number | BN | string;
       }[],
       txDetails?: Truffle.TransactionDetails
@@ -103,7 +115,8 @@ export interface RariDelegatorInstance extends Truffle.ContractInstance {
       steps: {
         actionCode: number | BN | string;
         liquidityPool: number | BN | string;
-        currencyCode: string;
+        inputCurrencyCode: string;
+        outputCurrencyCode: string;
         amount: number | BN | string;
       }[],
       txDetails?: Truffle.TransactionDetails
@@ -112,7 +125,8 @@ export interface RariDelegatorInstance extends Truffle.ContractInstance {
       steps: {
         actionCode: number | BN | string;
         liquidityPool: number | BN | string;
-        currencyCode: string;
+        inputCurrencyCode: string;
+        outputCurrencyCode: string;
         amount: number | BN | string;
       }[],
       txDetails?: Truffle.TransactionDetails
@@ -227,6 +241,16 @@ export interface RariDelegatorInstance extends Truffle.ContractInstance {
   };
 
   methods: {
+    c_0x30bf6ae5(
+      c__0x30bf6ae5: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+
+    c_0xb6cc993a(
+      c__0xb6cc993a: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+
     destroy: {
       (txDetails?: Truffle.TransactionDetails): Promise<
         Truffle.TransactionResponse<AllEvents>
@@ -256,7 +280,8 @@ export interface RariDelegatorInstance extends Truffle.ContractInstance {
         steps: {
           actionCode: number | BN | string;
           liquidityPool: number | BN | string;
-          currencyCode: string;
+          inputCurrencyCode: string;
+          outputCurrencyCode: string;
           amount: number | BN | string;
         }[],
         txDetails?: Truffle.TransactionDetails
@@ -265,7 +290,8 @@ export interface RariDelegatorInstance extends Truffle.ContractInstance {
         steps: {
           actionCode: number | BN | string;
           liquidityPool: number | BN | string;
-          currencyCode: string;
+          inputCurrencyCode: string;
+          outputCurrencyCode: string;
           amount: number | BN | string;
         }[],
         txDetails?: Truffle.TransactionDetails
@@ -274,7 +300,8 @@ export interface RariDelegatorInstance extends Truffle.ContractInstance {
         steps: {
           actionCode: number | BN | string;
           liquidityPool: number | BN | string;
-          currencyCode: string;
+          inputCurrencyCode: string;
+          outputCurrencyCode: string;
           amount: number | BN | string;
         }[],
         txDetails?: Truffle.TransactionDetails
@@ -283,7 +310,8 @@ export interface RariDelegatorInstance extends Truffle.ContractInstance {
         steps: {
           actionCode: number | BN | string;
           liquidityPool: number | BN | string;
-          currencyCode: string;
+          inputCurrencyCode: string;
+          outputCurrencyCode: string;
           amount: number | BN | string;
         }[],
         txDetails?: Truffle.TransactionDetails
