@@ -207,10 +207,10 @@ contract Semicen is Ownable {
         // Lower the unclaimed reward amount by the amount being claimed.
         unclaimedRewardAmount = unclaimedRewardAmount.sub(rewardsToClaim);
 
+        emit RewardsClaimed(msg.sender, rewardsToClaim);
+
         // Send the fees to the sender.
         fundManager.withdrawInterestFees(rewardsToClaim, msg.sender);
-
-        emit RewardsClaimed(msg.sender, rewardsToClaim);
     }
 
     /// @notice Seize unclaimed rewards from a user with unclaimed rewards. Only can be called by the owner.
