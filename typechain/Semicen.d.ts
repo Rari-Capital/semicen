@@ -53,7 +53,9 @@ export interface Rebalance {
   name: "Rebalance";
   args: {
     rebalancer: string;
+    steps: string[];
     0: string;
+    1: string[];
   };
 }
 

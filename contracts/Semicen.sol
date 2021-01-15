@@ -50,7 +50,7 @@ contract Semicen is Ownable {
     event RewardClaimTimelockUpdated(uint256 newTimelock);
 
     /// @notice Emitted when a rebalance is conducted.
-    event Rebalance(address indexed rebalancer);
+    event Rebalance(address indexed rebalancer, bytes[] steps);
 
     /// @notice Emitted when a rebalancer is added via addRebalancer()
     event RebalancerAdded(address indexed newRebalancer);
@@ -183,7 +183,7 @@ contract Semicen is Ownable {
         rebalancerLastRebalance[msg.sender] = timestamp;
         epochRebalancers[timestamp] = msg.sender;
 
-        emit Rebalance(msg.sender);
+        emit Rebalance(msg.sender, steps);
 
         // Execute rebalance steps
         for (uint256 i = 0; i < steps.length; i++) {
