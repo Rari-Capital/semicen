@@ -150,7 +150,7 @@ contract Semicen is Ownable {
 
     /// @notice Performs a rebalance by shifting the pool's allocations.
     /// @notice The rebalancer will get the fees earned from their rebalance when the next one takes place.
-    function rebalance(bytes[] calldata steps) public {
+    function rebalance(bytes[] calldata steps) external {
         require(
             trustedRebalancers[msg.sender],
             "You must be a trusted rebalancer!"
