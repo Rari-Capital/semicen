@@ -25,7 +25,7 @@ COINMARKETCAP_API_KEY=XXX
 To deploy a Semicen contract to mainnet run the deploy script with similar inputs to the example below:
 
 ```bash
-npm run deploy -- --network mainnet --deploy-mainnet --epoch-length 21600 --reward-claim-timelock 604800 --d-manager 0x0000000000000000000000000000000000000000 --fund-controller 0x0000000000000000000000000000000000000000
+npm run deploy -- --network mainnet --deploy-mainnet --epoch-length 21600 --reward-claim-timelock 604800 --fund-manager 0x0000000000000000000000000000000000000000 --fund-controller 0x0000000000000000000000000000000000000000
 ```
 
 - Make sure to choose an epoch length and claim timelock that you like as well as setting the FundManager and FundController paramaters to valid addresses.
