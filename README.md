@@ -1,6 +1,6 @@
 # Semicen
 
-Consensus and reward contracts for Rari's 'semicen' rebalancer system.
+Contracts for Rari's 'semicen' rebalancer system.
 
 ## Deployment/Development:
 
