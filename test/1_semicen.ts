@@ -257,6 +257,16 @@ contract("Semicen", (accounts) => {
       .should.eventually.bnEqual(0);
   });
 
+  it("it will revert on a bad step", async () => {
+    await timeMachine.advanceTimeAndBlock(minEpochLength * 1.5);
+
+    await semicen
+      .rebalance([web3.eth.abi.encodeFunctionSignature("notAFunction()")], {
+        from: rebalancer2,
+      })
+      .should.be.rejectedWith("Execution of a step failed");
+  });
+
   it("allows setting the epoch length and reward timelock", async () => {
     const newEpochLength = 1337;
 

@@ -143,6 +143,11 @@ export interface SemicenInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
+  c_0x2e703585(
+    c__0x2e703585: string,
+    txDetails?: Truffle.TransactionDetails
+  ): Promise<void>;
+
   claimRewards: {
     (txDetails?: Truffle.TransactionDetails): Promise<
       Truffle.TransactionResponse<AllEvents>
@@ -365,6 +370,11 @@ export interface SemicenInstance extends Truffle.ContractInstance {
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
+
+    c_0x2e703585(
+      c__0x2e703585: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
 
     claimRewards: {
       (txDetails?: Truffle.TransactionDetails): Promise<
