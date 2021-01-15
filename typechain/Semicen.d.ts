@@ -9,15 +9,24 @@ export interface SemicenContract extends Truffle.Contract<SemicenInstance> {
   "new"(
     _minEpochLength: number | BN | string,
     _rewardClaimTimelock: number | BN | string,
-    _fundDelegator: string,
+    _fundController: string,
+    _fundManager: string,
     meta?: Truffle.TransactionDetails
   ): Promise<SemicenInstance>;
 }
 
-export interface FundDelegatorUpdated {
-  name: "FundDelegatorUpdated";
+export interface FundControllerUpdated {
+  name: "FundControllerUpdated";
   args: {
-    newFundDelegator: string;
+    newFundController: string;
+    0: string;
+  };
+}
+
+export interface FundManagerUpdated {
+  name: "FundManagerUpdated";
+  args: {
+    newFundManager: string;
     0: string;
   };
 }
@@ -44,21 +53,7 @@ export interface Rebalance {
   name: "Rebalance";
   args: {
     rebalancer: string;
-    steps: {
-      actionCode: BN;
-      liquidityPool: BN;
-      inputCurrencyCode: string;
-      outputCurrencyCode: string;
-      amount: BN;
-    }[];
     0: string;
-    1: {
-      actionCode: BN;
-      liquidityPool: BN;
-      inputCurrencyCode: string;
-      outputCurrencyCode: string;
-      amount: BN;
-    }[];
   };
 }
 
@@ -117,7 +112,8 @@ export interface RewardsSeized {
 }
 
 type AllEvents =
-  | FundDelegatorUpdated
+  | FundControllerUpdated
+  | FundManagerUpdated
   | MinEpochLengthUpdated
   | OwnershipTransferred
   | Rebalance
@@ -147,11 +143,6 @@ export interface SemicenInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
-  c_0x2e703585(
-    c__0x2e703585: string,
-    txDetails?: Truffle.TransactionDetails
-  ): Promise<void>;
-
   claimRewards: {
     (txDetails?: Truffle.TransactionDetails): Promise<
       Truffle.TransactionResponse<AllEvents>
@@ -166,7 +157,9 @@ export interface SemicenInstance extends Truffle.ContractInstance {
     txDetails?: Truffle.TransactionDetails
   ): Promise<string>;
 
-  fundDelegator(txDetails?: Truffle.TransactionDetails): Promise<string>;
+  fundController(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+  fundManager(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
   hasEpochExpired(txDetails?: Truffle.TransactionDetails): Promise<boolean>;
 
@@ -177,44 +170,19 @@ export interface SemicenInstance extends Truffle.ContractInstance {
   owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
   rebalance: {
-    (
-      steps: {
-        actionCode: number | BN | string;
-        liquidityPool: number | BN | string;
-        inputCurrencyCode: string;
-        outputCurrencyCode: string;
-        amount: number | BN | string;
-      }[],
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<Truffle.TransactionResponse<AllEvents>>;
+    (steps: string[], txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
     call(
-      steps: {
-        actionCode: number | BN | string;
-        liquidityPool: number | BN | string;
-        inputCurrencyCode: string;
-        outputCurrencyCode: string;
-        amount: number | BN | string;
-      }[],
+      steps: string[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<void>;
     sendTransaction(
-      steps: {
-        actionCode: number | BN | string;
-        liquidityPool: number | BN | string;
-        inputCurrencyCode: string;
-        outputCurrencyCode: string;
-        amount: number | BN | string;
-      }[],
+      steps: string[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
-      steps: {
-        actionCode: number | BN | string;
-        liquidityPool: number | BN | string;
-        inputCurrencyCode: string;
-        outputCurrencyCode: string;
-        amount: number | BN | string;
-      }[],
+      steps: string[],
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -281,20 +249,39 @@ export interface SemicenInstance extends Truffle.ContractInstance {
     ): Promise<number>;
   };
 
-  setFundDelegator: {
-    (newFundDelegator: string, txDetails?: Truffle.TransactionDetails): Promise<
-      Truffle.TransactionResponse<AllEvents>
-    >;
+  setFundController: {
+    (
+      newFundController: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<Truffle.TransactionResponse<AllEvents>>;
     call(
-      newFundDelegator: string,
+      newFundController: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<void>;
     sendTransaction(
-      newFundDelegator: string,
+      newFundController: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
     estimateGas(
-      newFundDelegator: string,
+      newFundController: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<number>;
+  };
+
+  setFundManager: {
+    (newFundManager: string, txDetails?: Truffle.TransactionDetails): Promise<
+      Truffle.TransactionResponse<AllEvents>
+    >;
+    call(
+      newFundManager: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<void>;
+    sendTransaction(
+      newFundManager: string,
+      txDetails?: Truffle.TransactionDetails
+    ): Promise<string>;
+    estimateGas(
+      newFundManager: string,
       txDetails?: Truffle.TransactionDetails
     ): Promise<number>;
   };
@@ -379,11 +366,6 @@ export interface SemicenInstance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
-    c_0x2e703585(
-      c__0x2e703585: string,
-      txDetails?: Truffle.TransactionDetails
-    ): Promise<void>;
-
     claimRewards: {
       (txDetails?: Truffle.TransactionDetails): Promise<
         Truffle.TransactionResponse<AllEvents>
@@ -398,7 +380,9 @@ export interface SemicenInstance extends Truffle.ContractInstance {
       txDetails?: Truffle.TransactionDetails
     ): Promise<string>;
 
-    fundDelegator(txDetails?: Truffle.TransactionDetails): Promise<string>;
+    fundController(txDetails?: Truffle.TransactionDetails): Promise<string>;
+
+    fundManager(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
     hasEpochExpired(txDetails?: Truffle.TransactionDetails): Promise<boolean>;
 
@@ -409,44 +393,19 @@ export interface SemicenInstance extends Truffle.ContractInstance {
     owner(txDetails?: Truffle.TransactionDetails): Promise<string>;
 
     rebalance: {
-      (
-        steps: {
-          actionCode: number | BN | string;
-          liquidityPool: number | BN | string;
-          inputCurrencyCode: string;
-          outputCurrencyCode: string;
-          amount: number | BN | string;
-        }[],
-        txDetails?: Truffle.TransactionDetails
-      ): Promise<Truffle.TransactionResponse<AllEvents>>;
+      (steps: string[], txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
       call(
-        steps: {
-          actionCode: number | BN | string;
-          liquidityPool: number | BN | string;
-          inputCurrencyCode: string;
-          outputCurrencyCode: string;
-          amount: number | BN | string;
-        }[],
+        steps: string[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<void>;
       sendTransaction(
-        steps: {
-          actionCode: number | BN | string;
-          liquidityPool: number | BN | string;
-          inputCurrencyCode: string;
-          outputCurrencyCode: string;
-          amount: number | BN | string;
-        }[],
+        steps: string[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
-        steps: {
-          actionCode: number | BN | string;
-          liquidityPool: number | BN | string;
-          inputCurrencyCode: string;
-          outputCurrencyCode: string;
-          amount: number | BN | string;
-        }[],
+        steps: string[],
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };
@@ -513,21 +472,39 @@ export interface SemicenInstance extends Truffle.ContractInstance {
       ): Promise<number>;
     };
 
-    setFundDelegator: {
+    setFundController: {
       (
-        newFundDelegator: string,
+        newFundController: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<Truffle.TransactionResponse<AllEvents>>;
       call(
-        newFundDelegator: string,
+        newFundController: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<void>;
       sendTransaction(
-        newFundDelegator: string,
+        newFundController: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<string>;
       estimateGas(
-        newFundDelegator: string,
+        newFundController: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<number>;
+    };
+
+    setFundManager: {
+      (newFundManager: string, txDetails?: Truffle.TransactionDetails): Promise<
+        Truffle.TransactionResponse<AllEvents>
+      >;
+      call(
+        newFundManager: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<void>;
+      sendTransaction(
+        newFundManager: string,
+        txDetails?: Truffle.TransactionDetails
+      ): Promise<string>;
+      estimateGas(
+        newFundManager: string,
         txDetails?: Truffle.TransactionDetails
       ): Promise<number>;
     };

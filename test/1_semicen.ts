@@ -13,17 +13,15 @@ import {
   MockFundControllerContract,
   SemicenContract,
   SemicenInstance,
-  RariDelegatorContract,
+  MockFundControllerInstance,
+  MockFundManagerInstance,
 } from "../typechain";
-import { nullAddress } from "../utils";
 
 const Semicen: SemicenContract = artifacts.require("Semicen");
 
 const MockFundController: MockFundControllerContract = artifacts.require(
   "MockFundController"
 );
-
-const RariDelegator: RariDelegatorContract = artifacts.require("RariDelegator");
 
 const MockFundManager: MockFundManagerContract = artifacts.require(
   "MockFundManager"
@@ -32,28 +30,47 @@ const MockFundManager: MockFundManagerContract = artifacts.require(
 const minEpochLength = 21600;
 const claimRewardsTimelock = 604800;
 
+function findJSONInterface(jsonInterfaces: any, name: string) {
+  for (const jsonInterface of jsonInterfaces) {
+    if (jsonInterface.name == name) {
+      return jsonInterface;
+    }
+  }
+}
+
+function encodeFunctionCall(
+  fundControllerJSONInterface: any,
+  functionName: string,
+  params: any[]
+) {
+  return web3.eth.abi.encodeFunctionCall(
+    findJSONInterface(fundControllerJSONInterface, functionName),
+    params
+  );
+}
+
 contract("Semicen", (accounts) => {
   let [deployer, rebalancer1, rebalancer2, rebalancer3, random] = accounts;
 
   let semicen: SemicenInstance;
+  let mockFundController: MockFundControllerInstance;
+  let mockFundManager: MockFundManagerInstance;
+
+  let fundControllerJSONInterface;
 
   before(async () => {
-    const mockFundManager = await MockFundManager.new();
-    const mockFundController = await MockFundController.new();
+    mockFundController = await MockFundController.new();
+    mockFundManager = await MockFundManager.new();
 
-    const rariDelegator = await RariDelegator.new(
-      mockFundController.address,
-      mockFundManager.address,
-      nullAddress
-    );
+    fundControllerJSONInterface =
+      mockFundController.contract.options.jsonInterface;
 
     semicen = await Semicen.new(
       minEpochLength,
       claimRewardsTimelock,
-      rariDelegator.address
+      mockFundController.address,
+      mockFundManager.address
     );
-
-    await rariDelegator.setSemicen(semicen.address);
   });
 
   it("adds the deployer as a rebalancer by default", async function () {
@@ -83,13 +100,11 @@ contract("Semicen", (accounts) => {
     await semicen
       .rebalance(
         [
-          {
-            actionCode: 1,
-            liquidityPool: 0,
-            inputCurrencyCode: "DAI",
-            outputCurrencyCode: "",
-            amount: 0,
-          },
+          encodeFunctionCall(fundControllerJSONInterface, "withdrawFromPool", [
+            "1",
+            "USDT",
+            (400 * 1e6).toString(),
+          ]),
         ],
         {
           from: random,
@@ -103,20 +118,17 @@ contract("Semicen", (accounts) => {
 
     const tx = await semicen.rebalance(
       [
-        {
-          actionCode: 0,
-          liquidityPool: 0,
-          inputCurrencyCode: "USDC",
-          outputCurrencyCode: "",
-          amount: 1000,
-        },
-        {
-          actionCode: 1,
-          liquidityPool: 1,
-          inputCurrencyCode: "USDC",
-          outputCurrencyCode: "",
-          amount: 1000,
-        },
+        encodeFunctionCall(fundControllerJSONInterface, "approveToPool", [
+          "1",
+          "DAI",
+          (400 * 1e18).toString(),
+        ]),
+
+        encodeFunctionCall(fundControllerJSONInterface, "depositToPool", [
+          "1",
+          "DAI",
+          (400 * 1e18).toString(),
+        ]),
       ],
       { from: rebalancer1 }
     );
@@ -135,13 +147,11 @@ contract("Semicen", (accounts) => {
     await semicen
       .rebalance(
         [
-          {
-            actionCode: 2,
-            liquidityPool: 1,
-            inputCurrencyCode: "USDC",
-            outputCurrencyCode: "",
-            amount: 1000,
-          },
+          encodeFunctionCall(fundControllerJSONInterface, "withdrawFromPool", [
+            "1",
+            "DAI",
+            (400 * 1e18).toString(),
+          ]),
         ],
         {
           from: rebalancer2,
@@ -161,27 +171,28 @@ contract("Semicen", (accounts) => {
 
     await semicen.rebalance(
       [
-        {
-          actionCode: 2,
-          liquidityPool: 1,
-          inputCurrencyCode: "USDC",
-          outputCurrencyCode: "",
-          amount: 1000,
-        },
-        {
-          actionCode: 3,
-          liquidityPool: 0,
-          inputCurrencyCode: "USDT",
-          outputCurrencyCode: "",
-          amount: 1000,
-        },
-        {
-          actionCode: 4,
-          liquidityPool: 0,
-          inputCurrencyCode: "USDT",
-          outputCurrencyCode: "USDC",
-          amount: 1000,
-        },
+        encodeFunctionCall(fundControllerJSONInterface, "withdrawFromPool", [
+          "1",
+          "USDT",
+          (400 * 1e6).toString(),
+        ]),
+
+        encodeFunctionCall(fundControllerJSONInterface, "approveToMUsd", [
+          "USDT",
+          (400 * 1e6).toString(),
+        ]),
+
+        encodeFunctionCall(fundControllerJSONInterface, "swapMStable", [
+          "USDT",
+          "USDC",
+          (400 * 1e6).toString(),
+        ]),
+
+        encodeFunctionCall(fundControllerJSONInterface, "depositToPool", [
+          "1",
+          "USDC",
+          (400 * 1e6).toString(),
+        ]),
       ],
       { from: rebalancer2 }
     );
@@ -224,13 +235,11 @@ contract("Semicen", (accounts) => {
 
     await semicen.rebalance(
       [
-        {
-          actionCode: 2,
-          liquidityPool: 1,
-          inputCurrencyCode: "USDT",
-          outputCurrencyCode: "",
-          amount: 500,
-        },
+        encodeFunctionCall(fundControllerJSONInterface, "depositToPool", [
+          "1",
+          "USDC",
+          (10 * 1e6).toString(),
+        ]),
       ],
       { from: rebalancer2 }
     );
@@ -262,13 +271,19 @@ contract("Semicen", (accounts) => {
       .should.eventually.bnEqual(newClaimTimelock);
   });
 
-  it("allows setting the fund delegator", async () => {
-    const rariDelegator2 = await RariDelegator.new(
-      nullAddress,
-      nullAddress,
-      semicen.address
-    );
+  it("allows setting the fundManager and fundController", async () => {
+    const mockFundController2 = await MockFundController.new();
 
-    await semicen.setFundDelegator(rariDelegator2.address);
+    await semicen.setFundController(mockFundController2.address);
+    await semicen
+      .fundController()
+      .should.eventually.become(mockFundController2.address);
+
+    const mockFundManager2 = await MockFundManager.new();
+
+    await semicen.setFundManager(mockFundManager2.address);
+    await semicen
+      .fundManager()
+      .should.eventually.become(mockFundManager2.address);
   });
 });

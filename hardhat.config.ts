@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
 dotenv.config();
 
-import "./deployTasks";
+import "./tasks";
 
 import { HardhatUserConfig } from "hardhat/config";
 
