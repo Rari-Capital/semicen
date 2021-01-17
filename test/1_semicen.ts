@@ -30,6 +30,8 @@ const MockFundManager: MockFundManagerContract = artifacts.require(
 const minEpochLength = 21600;
 const claimRewardsTimelock = 604800;
 
+const nullAddress = "0x0000000000000000000000000000000000000000";
+
 function findJSONInterface(jsonInterfaces: any, name: string) {
   for (const jsonInterface of jsonInterfaces) {
     if (jsonInterface.name == name) {
@@ -279,6 +281,16 @@ contract("Semicen", (accounts) => {
     await semicen
       .rewardClaimTimelock()
       .should.eventually.bnEqual(newClaimTimelock);
+  });
+
+  it("does not allow setting invalid values for fundManager and fundController", async () => {
+    await semicen
+      .setFundController(nullAddress)
+      .should.be.rejectedWith("cannot assign the null address");
+
+    await semicen
+      .setFundManager(nullAddress)
+      .should.be.rejectedWith("cannot assign the null address");
   });
 
   it("allows setting the fundManager and fundController", async () => {

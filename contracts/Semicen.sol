@@ -95,6 +95,11 @@ contract Semicen is Ownable {
     /// @notice Updates the fundController variable. Only the owner can update.
     /// @param newFundController The new fundController.
     function setFundController(address newFundController) external onlyOwner {
+        require(
+            newFundController != address(0),
+            "You cannot assign the null address as the fundController!"
+        );
+
         fundController = newFundController;
         emit FundControllerUpdated(newFundController);
     }
@@ -102,6 +107,11 @@ contract Semicen is Ownable {
     /// @notice Updates the fundManager variable. Only the owner can update.
     /// @param newFundManager The new fundManager.
     function setFundManager(IFundManager newFundManager) external onlyOwner {
+        require(
+            address(newFundManager) != address(0),
+            "You cannot assign the null address as the fundManager!"
+        );
+
         fundManager = newFundManager;
         emit FundManagerUpdated(address(newFundManager));
     }

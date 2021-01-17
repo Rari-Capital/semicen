@@ -7,7 +7,8 @@
     "test": "hardhat test",
     "coverage": "hardhat coverage && npm run open-coverage-report",
     "open-coverage-report": "if [ $(uname) = 'Darwin' ]; then open ./coverage/index.html; fi",
-    "deploy": "hardhat deploy"
+    "deploy": "hardhat deploy",
+    "verify": "hardhat verify"
   },
   "author": "t11s",
   "license": "AGPL-3.0-only",
