@@ -72,6 +72,10 @@ C) If a single rebalancer is not able to connect to the internet, any of the oth
 
 ## Long term goals
 
-The Semicen contract is a temporary contract meant only to be used while the development of a more decentralized (but more complex) contract is underway.
+The Semicen contract is a temporary contract meant to be used while the development of a more decentralized (but more complex) solution is underway.
 
-This contract is still useful for the reasons listed in the section above but is not a truly decentralized rebalance mechanism. Work is underway on a contract which will be known as `CruiseController.sol` that will reach consensus via proof of stake, allow any RGT holder to participate and feature slashing and other punishments for misbehaviors. However, development time for `CruiseController.sol` is variable due to it's dependence on in-development L2 technologies, which is why the Semicen contract has been developed for use in the meantime.
+This contract is still useful for the reasons listed in the section above but is not a truly decentralized rebalance mechanism.
+
+Work is underway on a contract which will reach consensus via proof of stake, allow any RGT holder to participate and feature slashing and other punishments for misbehaviors.
+
+However, development time for this upgraded system is variable due to it's dependence on in-development L2 technologies, which is why the Semicen contract has been developed for use in the meantime.
