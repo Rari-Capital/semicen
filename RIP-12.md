@@ -2,14 +2,14 @@
 
 ## Background:
 
-Rari Capital plans to expand the amount of pools it offers significantly, which increases the amount of gas the Rari Capital team has to pay to perform rebalances for its users. At a certain point it becomes necessary to distribute the task of rebalancing between multiple parties for redundancy and reward those parties with fees, which is why this proposal has been created to begin the migration process to a more decentralized and scalable rebalance system. 
+Rari Capital plans to expand the amount of pools it offers significantly, which exponentially increases the amount of gas the Rari Capital team has to pay to perform rebalances for its users. At a certain point it becomes necessary to distribute the task of rebalancing between multiple parties for redundancy and reward those parties with fees, which is why this proposal has been created to begin the migration process to a more decentralized and scalable rebalance system. 
 
 ## Abstract:
 
 The Rari Capital team has developed a contract which we call the "Semicen" rebalance layer. 
 This contract when given the permission to trigger rebalances allows multiple trusted parties (added and managed by the Rari Capital DAO) to rebalance a pool on a first-come, first "serve" basis and earn the fees generated during the time their rebalance was active.
 
-Rebalancers can only move funds between integrated protocols (no sending to EOAs or untrusted wallets) and the Rari Capital DAO can punish rebalancers that misbehave. Users funds are at 0 risk even if a trusted rebalancer goes rouge.
+Rebalancers can only move funds between integrated protocols (no sending to EOAs or untrusted wallets) and the Rari Capital DAO can punish rebalancers that misbehave. User funds are at 0 risk even if a trusted rebalancer goes rouge.
 
 - This proposal, if passed, will grant the RCAP team permission to swap out the current centralized rebalancer address for the Semicen contract. 
 
