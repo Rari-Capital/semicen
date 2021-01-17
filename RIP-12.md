@@ -26,7 +26,8 @@ B) To distribute the work required to calculate the optimal times and steps to p
 
 C) If a single rebalancer is not able to connect to the internet, any of the other trusted rebalancers can continue rebalancing the pool to earn the best returns for its depositors.
 
-## Long term goals
+## Long term goals:
+
 The Semicen contract is a temporary contract meant to be used while the development of a more decentralized (but more complex) solution is underway.
 
 This contract is still useful for the reasons listed in the section above but is not a truly decentralized rebalance mechanism. 
