@@ -36,7 +36,7 @@ Run `npx hardhat help deploy` to learn more about each flag!
 
 **4. (Optional) Verify contracts on Etherscan**
 
-This happens automatically when running the deploy task but in the event that Etherscan verification fails, you may run the verify task like so:
+Etherscan verification is triggered automatically when running the deploy task but in the event that Etherscan verification fails, you may manually run the verify task like so:
 
 ```bash
 npm run verify -- --network mainnet DEPLOYED_CONTRACT_ADDRESS "Epoch Length Here" "Reward Claim Timelock Here" "FundController Address Here" "FundManager Address Here"
