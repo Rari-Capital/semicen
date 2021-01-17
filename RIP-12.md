@@ -1,4 +1,4 @@
-# [RIP-12] Switch to Semicen rebalance layer and reward trusted rebalancers
+# [RIP-12] Switch to Semicen rebalance system and reward trusted rebalancers
 
 ## Background:
 
