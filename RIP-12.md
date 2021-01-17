@@ -2,7 +2,7 @@
 
 ## Background:
 
-Rari Capital plans to expand the amount of pools it offers significantly, which increases the amount of gas the Rari Capital team has to pay to perform rebalances for its users. At a certian point it becomes necessary to distribute the task of rebalancing between multiple parties for redundancy and reward those parties with fees, which is why this proposal has be created to begin the migration proccess to a more decentralized and scalable rebalance system. 
+Rari Capital plans to expand the amount of pools it offers significantly, which increases the amount of gas the Rari Capital team has to pay to perform rebalances for its users. At a certian point it becomes necessary to distribute the task of rebalancing between multiple parties for redundancy and reward those parties with fees, which is why this proposal has been created to begin the migration proccess to a more decentralized and scalable rebalance system. 
 
 ## Abstract:
 
